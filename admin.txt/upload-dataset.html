@@ -1,0 +1,56 @@
+{% extends 'admin/base.html' %}
+
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <div class="page-inner">
+        <div class="page-header">
+            {% comment %} <h3 class="fw-bold mb-3">User Managment</h3> {% endcomment %}
+            <ul class="breadcrumbs mb-3">
+                <li class="nav-home">
+                    <a href="{% url 'admin_dashboard' %}">
+                    <i class="icon-home"></i>
+                    </a>
+                </li>
+                <li class="separator">
+                    <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'admin_dashboard' %}">Dataset</a>
+                </li>
+                <li class="separator">
+                    <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item fw-bold">
+                    <a href="#">Upload Dataset</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="row d-flex justify-content-center">
+
+            <div class="col-md-6">
+              <div class="card card-clean card-annoucement card-round" id="admin_card">
+                <div class="card-body text-center">
+                  <div class="card-opening">Upload Dataset</div>
+                  <div class="card-desc">
+                    choose a dataset file to upload !
+                  </div>
+                  <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                      <div class="form-floating m-2">
+                        <input type="file" class="form-control" name="dataset_file" id="dataset_file" required>
+                        <label for="profilepic">Choose Dataset</label>
+                      </div>
+                      <div class="card-detail">
+                        <button class="btn btn-secondary btn-rounded m-2" type="submit">Upload Dataset</button>
+                      </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

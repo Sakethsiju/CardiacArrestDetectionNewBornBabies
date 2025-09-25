@@ -1,0 +1,40 @@
+{% extends "main/base.html" %}
+
+{% load static %}
+
+{% block content %}
+<div class="container-fluid py-5 customCtn">
+    <div class="container">
+        <div class="row g-5 align-items-center d-flex justify-content-between">
+            <div class="col-lg-4 wow fadeIn" data-wow-delay="0.1s">
+                <div class="windowImgCtn">
+                    <img class="img-fluid windowImg rounded" src="{% static 'sampleTheme/img/login.jpg'%}">
+                </div>
+            </div>
+            <div class="col-lg-6 wow fadeIn">
+                <div class="wow fadeIn shadow p-3 rounded formCtn" data-wow-delay="0.2s">
+                    <h1 class="text-center">Admin Login</h1>
+                    <form class="userForm" method="POST">
+                        {% csrf_token %}
+                            <div class="col-md-12">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="username" placeholder="Username" name="username" required>
+                                    <label for="username">User Name</label>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-floating">
+                                    <input type="password" class="form-control" id="password" placeholder="Password" name="password" required>
+                                    <label for="password">Password</label>
+                                </div>
+                            </div>
+                            <div class="col-12 text-center">
+                                <button class="btn btn-primary w-50 py-3" type="submit">Login</button>
+                            </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock%}

@@ -1,0 +1,50 @@
+{% extends 'admin/base.html' %}
+
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <div class="page-inner">
+        <div class="page-header">
+            {% comment %} <h3 class="fw-bold mb-3">User Managment</h3> {% endcomment %}
+            <ul class="breadcrumbs mb-3">
+                <li class="nav-home">
+                    <a href="{% url 'admin_dashboard' %}">
+                    <i class="icon-home"></i>
+                    </a>
+                </li>
+                <li class="separator">
+                    <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'admin_dashboard' %}">Dataset</a>
+                </li>
+                <li class="separator">
+                    <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item fw-bold">
+                    <a href="#">Train and Test</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="row d-flex justify-content-center">
+
+            <div class="col-md-6">
+              <div class="card card-clean card-annoucement card-round">
+                <div class="card-body text-center">
+                  <div class="card-opening">Welcome Rian,</div>
+                  <div class="card-desc">
+                    Congrats and best wishes for success in your brand new
+                    life! I knew that you would do this!
+                  </div>
+                  <div class="card-detail">
+                    <div class="btn btn-secondary btn-rounded m-2">Train and Test</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

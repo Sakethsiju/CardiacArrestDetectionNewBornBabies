@@ -1,0 +1,160 @@
+{% extends 'admin/base.html' %}
+
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <div class="page-inner">
+        <div class="page-header">
+            {% comment %} <h3 class="fw-bold mb-3">User Managment</h3> {% endcomment %}
+            <ul class="breadcrumbs mb-3">
+                <li class="nav-home">
+                    <a href="{% url 'admin_dashboard' %}">
+                    <i class="icon-home"></i>
+                    </a>
+                </li>
+                <li class="separator">
+                    <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'admin_dashboard' %}">Models</a>
+                </li>
+                <li class="separator">
+                    <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item fw-bold">
+                    <a href="#">SVM Result</a>
+                </li>
+                <li class="separator">
+                  <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item fw-bold">
+                    <a href="{% url 'decision_tree' %}">Move to Next</a>
+                </li>
+            </ul>
+        </div>
+        <div class="row d-flex justify-content-center">
+          <div class="col-md-6">
+            <div class="card card-clean card-annoucement card-round" id="admin_card">
+              <div class="card-body text-center">
+                <div class="card-opening">SVM Algorithm</div>
+                  <div class="card-desc">
+                    This action will run the Algorithm based on the uploaded dataset!
+                  </div>
+                <div class="card-detail">
+                  <a class="btn btn-secondary btn-rounded m-2" href="{% url 'SVM_Algo_result' %}">Run Algorithm Again</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Result</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                          <table
+                          id="basic-datatables"
+                          class="display table table-hover"
+                          >
+                          <thead>
+                              <tr>
+                              <th>Algorithm Name</th>
+                              <th>Accuracy</th>
+                              <th>Precession</th>
+                              <th>F1 Score</th>
+                              <th>Recall</th>
+                              <th class="text-center">Algorithm Status</th>
+                              </tr>
+                          </thead>
+                          {% comment %} <tfoot>
+                              <tr>
+                              <th>Name</th>
+                              <th>Position</th>
+                              <th>Office</th>
+                              <th>Age</th>
+                              <th>Start date</th>
+                              <th>Salary</th>
+                              </tr>
+                          </tfoot> {% endcomment %}
+                          <tbody>
+                              <tr>
+                                <td class="text-primary">{{results.Name}}</td>
+                                <td>{{results.Accuracy}}</td>
+                                <td>{{results.Precession}}</td>
+                                <td>{{results.F1_Score}}</td>
+                                <td>{{results.Recall}}</td>
+                                <td class="text-success">{{results.Name}} executed successfully</td>
+                              </tr>
+                          </tbody>
+                          </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+      $("#basic-datatables").DataTable({});
+
+      $("#multi-filter-select").DataTable({
+        pageLength: 5,
+        initComplete: function () {
+          this.api()
+            .columns()
+            .every(function () {
+              var column = this;
+              var select = $(
+                '<select class="form-select"><option value=""></option></select>'
+              )
+                .appendTo($(column.footer()).empty())
+                .on("change", function () {
+                  var val = $.fn.dataTable.util.escapeRegex($(this).val());
+
+                  column
+                    .search(val ? "^" + val + "$" : "", true, false)
+                    .draw();
+                });
+
+              column
+                .data()
+                .unique()
+                .sort()
+                .each(function (d, j) {
+                  select.append(
+                    '<option value="' + d + '">' + d + "</option>"
+                  );
+                });
+            });
+        },
+      });
+
+      // Add Row
+      $("#add-row").DataTable({
+        pageLength: 5,
+      });
+
+      var action =
+        '<td> <div class="form-button-action"> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task"> <i class="fa fa-edit"></i> </button> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove"> <i class="fa fa-times"></i> </button> </div> </td>';
+
+      $("#addRowButton").click(function () {
+        $("#add-row")
+          .dataTable()
+          .fnAddData([
+            $("#addName").val(),
+            $("#addPosition").val(),
+            $("#addOffice").val(),
+            action,
+          ]);
+        $("#addRowModal").modal("hide");
+      });
+    });
+</script>
+    
+{% endblock %}

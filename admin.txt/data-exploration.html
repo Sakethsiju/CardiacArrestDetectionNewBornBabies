@@ -1,0 +1,42 @@
+{% extends 'admin/base.html' %}
+
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <div class="page-inner">
+        <div class="page-header">
+            {% comment %} <h3 class="fw-bold mb-3">User Managment</h3> {% endcomment %}
+            <ul class="breadcrumbs mb-3">
+                <li class="nav-home">
+                    <a href="{% url 'admin_dashboard' %}">
+                    <i class="icon-home"></i>
+                    </a>
+                </li>
+                <li class="separator">
+                    <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'admin_dashboard' %}">Algorithms</a>
+                </li>
+                <li class="separator">
+                    <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item fw-bold">
+                    <a href="#">Data Exploration</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="row d-flex justify-content-around">
+            <div class="col-md-12">
+              <div class="card card-clean card-annoucement card-round">
+                <div class="card-body">
+                    <img src="{{ figure_img }}" alt="Data Exploration" />
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

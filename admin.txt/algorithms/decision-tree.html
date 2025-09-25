@@ -1,0 +1,55 @@
+{% extends 'admin/base.html' %}
+
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <div class="page-inner">
+        <div class="page-header">
+            {% comment %} <h3 class="fw-bold mb-3">User Managment</h3> {% endcomment %}
+            <ul class="breadcrumbs mb-3">
+                <li class="nav-home">
+                    <a href="{% url 'admin_dashboard' %}">
+                    <i class="icon-home"></i>
+                    </a>
+                </li>
+                <li class="separator">
+                    <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'admin_dashboard' %}">Models</a>
+                </li>
+                <li class="separator">
+                    <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item fw-bold">
+                    <a href="#">Decision Tree</a>
+                </li>
+                <li class="separator">
+                  <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item fw-bold">
+                    <a href="{% url 'logistic_reg' %}">Move to Next</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="row d-flex justify-content-center">
+
+            <div class="col-md-6">
+              <div class="card card-clean card-annoucement card-round" id="admin_card">
+                <div class="card-body text-center">
+                  <div class="card-opening">Decision Tree Classifier Algorithm</div>
+                  <div class="card-desc">
+                    This action will run the Algorithm based on the uploaded dataset!
+                  </div>
+                  <div class="card-detail">
+                    <a class="btn btn-secondary btn-rounded m-2" href="{% url 'decision_tree_result' %}">Run Decision Tree</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends "main/base.html" %}
+
+{% load static %}
+
+{% block content %}
+<div class="container-fluid py-5 customCtn">
+    <div class="container">
+        <div class="row g-5 align-items-center d-flex justify-content-evenly">
+            <div class="col-lg-4 wow fadeIn" data-wow-delay="0.1s">
+                <div class="windowImgCtn">
+                    <img class="img-fluid windowImg rounded" src="{% static 'sampleTheme/img/otp.jpg'%}">
+                </div>
+            </div>
+            <div class="col-lg-5 wow fadeIn">
+                <div class="wow fadeIn shadow p-3 rounded formotpCtn" data-wow-delay="0.2s">
+                    <h1 class="text-center">Enter OTP</h1>
+                    <form method="post" enctype="multipart/form-data" class="otpForm">
+                        {% csrf_token %}
+                        <div class="otpCtn">
+                          <input type="text" id="otp1" class="otpInput form-control" name="otp1" maxlength="1" />
+                          <input type="text" id="otp2" class="otpInput form-control" name="otp2" maxlength="1" />
+                          <input type="text" id="otp3" class="otpInput form-control" name="otp3" maxlength="1" />
+                          <input type="text" id="otp4" class="otpInput form-control" name="otp4" maxlength="1" />
+                        </div>
+                        <button type="submit" class="btn btn-primary m-3 w-100">Submit</button>
+                    </form>
+                    <a class="m-3" href="{% url "resendOtp" %}">Didn't recieve OTP? Resend OTP?</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+  <!-- Shift Focus of otp inputs-->
+  <script>
+    function alertOtp() {
+        return alert("OTP is regenerated")
+    }
+
+    document.addEventListener('DOMContentLoaded', (event) => {
+      const otpInputs = document.querySelectorAll('.otpInput');
+  
+      otpInputs.forEach((input, index) => {
+        input.addEventListener('input', () => {
+          if (input.value.length === 1 && index < otpInputs.length - 1) {
+            otpInputs[index + 1].focus();
+          }
+        });
+  
+        input.addEventListener('keydown', (e) => {
+          if (e.key === 'Backspace' && input.value === '' && index > 0) {
+            otpInputs[index - 1].focus();
+          }
+        });
+      });
+    });
+  </script>
+{% endblock%}

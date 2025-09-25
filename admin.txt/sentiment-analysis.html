@@ -1,0 +1,123 @@
+{% extends 'admin/base.html' %}
+
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <div class="page-inner">
+        <div class="page-header">
+            {% comment %} <h3 class="fw-bold mb-3">User Managment</h3> {% endcomment %}
+            <ul class="breadcrumbs mb-3">
+                <li class="nav-home">
+                    <a href="{% url 'admin_dashboard' %}">
+                    <i class="icon-home"></i>
+                    </a>
+                </li>
+                <li class="separator">
+                    <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'admin_dashboard' %}">Feedback Managment</a>
+                </li>
+                <li class="separator">
+                    <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item fw-bold">
+                    <a href="#">Sentiment Analysis</a>
+                </li>
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card" id="admin_card">
+                    <div class="card-header d-flex justify-content-between">
+                        <h4 class="card-title">Sentiment Analysis</h4>
+                        <a href="{% url 'deleteAllFeeds' %}" onClick="return confirm('All items will be deleted permenantly, Are you sure you want to proceed?')" class="btn btn-label-danger btn-round me-2">Delete All</a>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table
+                            id="basic-datatables"
+                            class="display table table-striped table-hover"
+                            >
+                            <thead>
+                                <tr>
+                                <th>User ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone Number</th>
+                                <th>Feedback</th>
+                                <th>Emotion</th>
+                                <th>Emoji</th>
+                                </tr>
+                            </thead>
+                            {% comment %} <tfoot>
+                                <tr>
+                                <th>Name</th>
+                                <th>Position</th>
+                                <th>Office</th>
+                                <th>Age</th>
+                                <th>Start date</th>
+                                <th>Salary</th>
+                                </tr>
+                            </tfoot> {% endcomment %}
+                            <tbody>
+                                {% for feed in feedbacks%}
+                                <tr>
+                                <td>{{feed.Reviewer.user_id}}</td>
+                                <td>{{feed.Reviewer.full_name}}</td>
+                                <td>{{feed.Reviewer.email}}</td>
+                                <td>{{feed.Reviewer.phone_number}}</td>
+                                <td>{{feed.Review}}</td>
+                                {% if feed.Sentiment == "very positive" or feed.Sentiment == "positive" %}
+                                    <td><span class="badge badge-success badgeEl">{{feed.Sentiment}}</span></td>
+                                {% elif feed.Sentiment == "very negative" or feed.Sentiment == "negative" %}
+                                    <td><span class="badge badge-danger badgeEl">{{feed.Sentiment}}</span></td>
+                                {% elif feed.Sentiment == "neutral" %}
+                                    <td><span class="badge badge-info badgeEl">{{feed.Sentiment}}</span></td>
+                                {% endif %}
+
+                                {% if feed.Sentiment == "very positive" %}
+                                    <td><img class="feedback_Emoji" src="{% static 'adminTheme\assets\img\emojies\happy-face.png' %}" /></td>
+                                {% elif feed.Sentiment == "positive" %}
+                                    <td><img class="feedback_Emoji" src="{% static 'adminTheme\assets\img\emojies\smile.png' %}" /></td>
+                                {% elif feed.Sentiment == "very negative" %}
+                                    <td><img class="feedback_Emoji" src="{% static 'adminTheme\assets\img\emojies\angry.png' %}" /></td>
+                                {% elif feed.Sentiment == "negative" %}
+                                    <td><img class="feedback_Emoji" src="{% static 'adminTheme\assets\img\emojies\sad.png' %}" /></td>
+                                {% elif feed.Sentiment == "neutral" %}
+                                    <td><img class="feedback_Emoji" src="{% static 'adminTheme\assets\img\emojies\neutral.png' %}" /></td>
+                                {% endif %}
+                                <td>
+                                    <div class="dropdown">
+                                        <button
+                                          class="btn btn-icon btn-info me-0"
+                                          type="button"
+                                          id="dropdownMenuButton"
+                                          data-bs-toggle="dropdown"
+                                          aria-haspopup="true"
+                                          aria-expanded="false"
+                                        >
+                                          <i class="fas fa-ellipsis-h"></i>
+                                        </button>
+                                        <div
+                                          class="dropdown-menu"
+                                          aria-labelledby="dropdownMenuButton"
+                                        >
+                                          <a class="dropdown-item text-danger" href="{% url 'deleteSentFeed' feed.Feed_id %}" onClick="return confirm('Are you sure you want to delete feedback?')"><i class="fa-solid fa-trash text-danger m-2"></i>Delete Feedback</a>
+                                        </div>
+                                    </div>
+                                </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    
+{% endblock %}

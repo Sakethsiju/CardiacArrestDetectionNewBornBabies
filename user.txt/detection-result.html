@@ -1,0 +1,243 @@
+{% extends 'user/base.html' %}
+
+{% load static %} 
+
+{% block content %}
+<div class="container-fluid py-5 customCtn">
+    <div class="container">
+        {% if prediction_result is not None %}
+            {% if prediction_result == 1 %}
+            <div class="row g-5 align-items-center">
+                <div class="col-lg-4 wow fadeIn" data-wow-delay="0.1s">
+                    <div class="windowImgCtn">
+                        <img class="img-fluid windowImg rounded" src="{% static 'sampleTheme/img/cry_baby.jpeg'%}">
+                    </div>
+                </div>
+                <div class="col-lg-8 wow fadeIn" data-wow-delay="0.5s">
+                    <div class="col-lg-12 userDetails rounded shadow">
+                        <div class="userDetailsCard">
+                            <div class="p-3">
+                                <h1 class="mb-4 text-danger">Cardiac Arrest Detected</h1>
+                                <p>The baby is likely to have a cardiac arrest. Please consult a doctor immediately or seek immediate medical attention.</p>
+
+                                <a class="btn btn-outline-primary rounded-pill px-4 me-3" href="{% url 'detection' %}">Detect Again</a>
+                                <a class="btn btn-primary rounded-pill px-4 me-3" href="#algoRes">View Algorithm Result</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row precautionsRow">
+                        <div class="precautionCard rounded shadow">
+                            <p></p>
+                        </div>
+                        <div class="precautionCard rounded shadow">
+                            <p></p>
+                        </div>
+                        <div class="precautionCard rounded shadow">
+                            <p></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% elif prediction_result == 0 %}
+
+            <div class="row g-5 align-items-center">
+                <div class="col-lg-4 wow fadeIn" data-wow-delay="0.1s">
+                    <div class="windowImgCtn">
+                        <img class="img-fluid windowImg rounded" src="{% static 'sampleTheme/img/smile_baby.jpg'%}">
+                    </div>
+                </div>
+                <div class="col-lg-8 wow fadeIn" data-wow-delay="0.5s">
+                    <div class="col-lg-12 userDetails rounded shadow">
+                        <div class="userDetailsCard">
+                            <div class="p-3">
+                                <h1 class="mb-4 text-success">No Cardiac Arrest Detected</h1>
+                                <p>Ensure to take preventive measures to avoid cardiac arrest in the future.</p>
+                                <a class="btn btn-outline-primary rounded-pill px-4 me-3" href="{% url 'detection' %}">Detect Again</a>
+                                <a class="btn btn-primary rounded-pill px-4 me-3" href="#algoRes">View Algorithm Result</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row precautionsRow">
+                        <div class="precautionCard rounded shadow">
+                            <p></p>
+                        </div>
+                        <div class="precautionCard rounded shadow">
+                            <p></p>
+                        </div>
+                        <div class="precautionCard rounded shadow">
+                            <p></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        {% else %}
+            <div class="row g-5 align-items-center">
+                <div class="col-lg-4 wow fadeIn" data-wow-delay="0.1s">
+                    <div class="windowImgCtn">
+                        <img class="img-fluid windowImg rounded" src="{% static 'sampleTheme/img/allgood.jpg'%}">
+                    </div>
+                </div>
+                <div class="col-lg-8 wow fadeIn" data-wow-delay="0.5s">
+                    <div class="col-lg-12 userDetails rounded shadow">
+                        <div class="userDetailsCard">
+                            <div class="p-3">
+                                <h1 class="mb-4 text-danger">Detection Failed</h1>
+
+                                <p>its a real user, its safe to interact with this user</p>
+                                <a class="btn btn-outline-primary rounded-pill px-4 me-3" href="{% url 'detection' %}">Detect Again</a>
+                                <a class="btn btn-primary rounded-pill px-4 me-3" href="#algoRes">View Algorithm Result</a>
+                            </div>
+                            <img src="{% static 'adminTheme\assets\img\kaiadmin\man-with-laptop-light.png' %}" height="150"/>
+                        </div>
+                    </div>
+                    <div class="row precautionsRow">
+                        <div class="col-lg-3 userDetails rounded shadow">
+                            <div class="precautionCard">
+                                <div class="p-3">
+                                    <p>The profile shares consistent, relevant content that aligns with the user’s claimed identity, and posts show normal social behavior without spammy or suspicious activities.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 userDetails rounded shadow">
+                            <div class="precautionCard">
+                                <div class="p-3">
+                                    <p>The profile has mutual friends or followers, regularly interacts with other users in a positive manner, and has a history of engaging in meaningful discussions.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 userDetails rounded shadow">
+                            <div class="precautionCard">
+                                <div class="p-3">
+                                    <p>The profile has positive feedback, likes, comments, or endorsements from other users, indicating trustworthiness and reliability in their interactions.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+        
+        {% endif %}
+    </div>
+</div>
+
+<div class="container-fluid py-5 customCtn" id="algoRes">
+    <div class="container">
+        <div class="row algoRes_Ctn">
+            <div class="col-lg-5 wow fadeIn shadow rounded algoRes p-3" data-wow-delay="0.1s">
+                <h1 class="text-primary">Decision Tree Algorithm<br /></h1>
+                <p>After running all the algorithms Decision Tree Alogrithm showed the best performance with an accuracy of 100.00 %</p>
+
+                <table class="table table-hover">
+                    {% comment %} <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">First</th>
+                        <th scope="col">Last</th>
+                        <th scope="col">Handle</th>
+                      </tr>
+                    </thead> {% endcomment %}
+                    <tbody>
+                      <tr>
+                        <th>Accuracy</th>
+                        <td class="text-center text-primary">{{algo_result.Accuracy}}</td>
+                      </tr>
+                      <tr>
+                        <th>Precession</th>
+                        <td class="text-center">{{algo_result.Precession}}</td>
+                      </tr>
+                      <tr>
+                        <th>F1 Score</th>
+                        <td class="text-center">{{algo_result.F1_Score}}</td>
+                      </tr>
+                      <tr>
+                        <th>Recall</th>
+                        <td class="text-center">{{algo_result.Recall}}</td>
+                      </tr>
+                      <tr>
+                        <th>Execution Status</th>
+                        <td class="text-center text-success">{{algo_result.Name}} executed Successfully</td>
+                      </tr>
+                      <tr>
+                        <td><a class="btn btn-outline-primary rounded-pill px-4 me-3" href="{% url 'detection' %}">Run Again</a></td>
+                      </tr>
+                    </tbody>
+                  </table>
+            </div>
+            <div class="col-lg-6 wow fadeIn shadow rounded algoRes text-center p-3" data-wow-delay="0.1s">
+                <h1 class="text-primary">Algorithm Accuracy Graph</h1>
+                <div class="comGraph_Ctn mt-2">
+                    <canvas id="myChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('myChart').getContext('2d');
+            const accuracy = 100.00;
+            const label =  ['Accuracy'];
+
+                         
+            const accuracyChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [0, 100],  // Min and max values for x-axis
+                    datasets: [{
+                        label: label,
+                        data: [{ x: 0, y: 0 }, { x: accuracy, y: accuracy }],
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderWidth: 2,
+                        fill: false,
+                        tension: 0.1,
+                        pointRadius: 5,
+                        pointBackgroundColor: 'rgba(75, 192, 192, 1)',
+                        pointBorderColor: 'rgba(75, 192, 192, 1)',
+                        pointHoverRadius: 7,
+                        pointHoverBackgroundColor: 'rgba(75, 192, 192, 1)',
+                        pointHoverBorderColor: 'rgba(75, 192, 192, 1)',
+                        showLine: true  // Ensures the line is drawn
+                    }]
+                },
+                options: {
+                    scales: {
+                        x: {
+                            type: 'linear',
+                            title: {
+                                display: true,
+                                text: 'Accuracy (%)'
+                            },
+                            min: 0,
+                            max: 100,
+                            ticks: {
+                                stepSize: 10,
+                                callback: function(value) { return value; },
+                                beginAtZero: true
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Accuracy (%)'
+                            },
+                            min: 0,
+                            max: 100,  // Ensures y-axis max value is 100
+                            ticks: {
+                                stepSize: 10,
+                                beginAtZero: true
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false // Hide the legend as we are using labels on points
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</div>
+
+{% endblock %}

@@ -1,0 +1,754 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Cardiac Arrest Detection</title>
+    <meta 
+      content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
+      name="viewport"
+    />
+    <link
+      rel="icon"
+      href="{% static 'adminTheme/assets/img/kaiadmin/stethoscope.png' %}"
+      type="image/x-icon"
+    />
+
+    <!-- Fonts and icons -->
+    <script src="{% static 'adminTheme/assets/js/plugin/webfont/webfont.min.js'%}"></script>
+    <script>
+        // Create a JavaScript variable to store the dynamic URL from Django's static tag
+        var fontCssUrl = "{% static 'adminTheme/assets/css/fonts.min.css' %}";
+    
+        WebFont.load({
+            google: { families: ["Public Sans:300,400,500,600,700"] },
+            custom: {
+                families: [
+                    "Font Awesome 5 Solid",
+                    "Font Awesome 5 Regular",
+                    "Font Awesome 5 Brands",
+                    "simple-line-icons",
+                ],
+                // Use the JavaScript variable to make the URL dynamic
+                urls: [fontCssUrl],
+            },
+            active: function () {
+                sessionStorage.fonts = true;
+            },
+        });
+    </script>
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="{% static 'adminTheme/assets/css/bootstrap.min.css'%}" />
+    <link rel="stylesheet" href="{% static 'adminTheme/assets/css/plugins.min.css'%}" />
+    <link rel="stylesheet" href="{% static 'adminTheme/assets/css/kaiadmin.min.css'%}" />
+
+    <!-- CSS Just for demo purpose, don't include it in your project -->
+    <link rel="stylesheet" href="{% static 'adminTheme/assets/css/demo.css'%}" />
+
+    <link href="{% static 'template.css' %}" rel="stylesheet">
+
+    {% comment %} font Awesome {% endcomment %}
+    <script src="https://kit.fontawesome.com/d5e128d38c.js" crossorigin="anonymous"></script>
+
+    <!--Chart.js-->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+  </head>
+  <body>
+    <div class="wrapper">
+      <!-- Sidebar -->
+      <div class="sidebar" data-background-color="dark">
+        <div class="sidebar-logo">
+          <!-- Logo Header -->
+          <div class="logo-header" data-background-color="dark">
+            <a href="{% url 'admin_dashboard' %}" class="logo d-flex  justify-content-center align-items-center">
+
+              <img
+                src="{% static 'adminTheme/assets/img/kaiadmin/stethoscope_b.png'%}"
+                alt="navbar brand"
+                class="navbar-brand"
+                height="45"
+              />
+              <h1 class="text-white m-2">Admin</h1>
+            </a>
+            <div class="nav-toggle">
+              <button class="btn btn-toggle toggle-sidebar">
+                <i class="gg-menu-right"></i>
+              </button>
+              <button class="btn btn-toggle sidenav-toggler">
+                <i class="gg-menu-left"></i>
+              </button>
+            </div>
+            <button class="topbar-toggler more">
+              <i class="gg-more-vertical-alt"></i>
+            </button>
+          </div>
+          <!-- End Logo Header -->
+        </div>
+        <div class="sidebar-wrapper scrollbar scrollbar-inner">
+          <div class="sidebar-content">
+            <ul class="nav nav-secondary">
+              <li class="nav-item {% if active_nav_item == 'admin_dashboard' %}active{% endif %}">
+                <a
+                  href="{% url 'admin_dashboard' %}"
+                  class="collapsed"
+                  aria-expanded="false"
+                >
+                  <i class="fas fa-home"></i>
+                  <p>Dashboard</p>
+                </a>
+              </li>
+              <li class="nav-item ">
+                <a data-bs-toggle="collapse" href="#base">
+                  <i class="fa-solid fa-users"></i>
+                  <p>User Managment</p>
+                  <span class="caret"></span>
+                </a>
+                <div class="collapse" id="base">
+                  <ul class="nav nav-collapse">
+                    <li class="{% if active_nav_item == 'pending_users' %}active{% endif %}">
+                      <a href="{% url 'pending_users' %}">
+                        <span class="sub-item">Pending Users</span>
+                        <span class="badge badge-warning badgeEl">{{pendingusers_count}}</span>
+                      </a>
+                    </li>
+                    <li class="{% if active_nav_item == 'all_users' %}active{% endif %}">
+                      <a href="{% url 'all_users' %}">
+                        <span class="sub-item">All Users</span>
+                        <span class="badge badge-success badgeEl">{{allUsers_count}}</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li class="nav-section">
+                <span class="sidebar-mini-icon">
+                  <i class="fa fa-ellipsis-h"></i>
+                </span>
+                <h4 class="text-section">Dataset</h4>
+              </li>
+              <li class="nav-item {% if active_nav_item == 'upload_dataset' %}active{% endif %}">
+                <a href="{% url 'upload_dataset' %}">
+                  <i class="fa-solid fa-upload"></i>
+                  <p>Upload Dataset</p>
+                </a>
+              </li>
+              <li class="nav-item {% if active_nav_item == 'view_datasets_list' %}active{% endif %}">
+                <a href="{% url 'view_datasets_list' %}">
+                  <i class="fas fa-database"></i>
+                  <p>View Datasets</p>
+                </a>
+              </li>
+              <li class="nav-section">
+                <span class="sidebar-mini-icon">
+                  <i class="fa fa-ellipsis-h"></i>
+                </span>
+                <h4 class="text-section">Algorithm Management</h4>
+              </li>
+              <li class="nav-item">
+                <a data-bs-toggle="collapse" href="#forms">
+                  <i class="fa-solid fa-layer-group"></i>
+                  <p>Algorithms</p>
+                  <span class="caret"></span>
+                </a>
+                <div class="collapse" id="forms">
+                  <ul class="nav nav-collapse">
+                    <li class="{% if active_nav_item == 'decision_tree' %}active{% endif %}">
+                      <a href="{% url 'decision_tree' %}">
+                        <span class="sub-item">Decision Tree</span>
+                      </a>
+                    </li>
+                    <li class="{% if active_nav_item == 'logistic_reg' %}active{% endif %}">
+                      <a href="{% url 'logistic_reg' %}">
+                        <span class="sub-item">Logistic Regression</span>
+                      </a>
+                    </li>
+                    <li class="{% if active_nav_item == 'SVM_algorithm' %}active{% endif %}">
+                      <a href="{% url 'SVM_algorithm' %}">
+                        <span class="sub-item">SVM Algorithm</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li class="nav-item {% if active_nav_item == 'algorithms_comparision_graph' %}active{% endif %}">
+                <a href="{% url 'algorithms_comparision_graph' %}">
+                  <i class="fa-solid fa-chart-column"></i>
+                  <p>Algorithms Comparision</p>
+                </a>
+              </li>
+              <li class="nav-section">
+                <span class="sidebar-mini-icon">
+                  <i class="fa fa-ellipsis-h"></i>
+                </span>
+                <h4 class="text-section">Feedback Managment</h4>
+              </li>
+              <li class="nav-item {% if active_nav_item == 'admin_feedbacks' %}active{% endif %}">
+                <a href="{% url 'admin_feedbacks' %}">
+                  <i class="fa-solid fa-comment"></i>
+                  <p>Feedbacks</p>
+                </a>
+              </li>
+              <li class="nav-item {% if active_nav_item == 'sentiment_analysis' %}active{% endif %}">
+                <a href="{% url 'sentiment_analysis' %}">
+                  <i class="fa-solid fa-face-smile-beam"></i>
+                  <p>Sentiment Analysis</p>
+                </a>
+              </li>
+              <li class="nav-item {% if active_nav_item == 'feedbacks_graph' %}active{% endif %}">
+                <a href="{% url 'feedbacks_graph' %}">
+                  <i class="fa-solid fa-chart-simple"></i>
+                  <p>Feedback Graph</p>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- End Sidebar -->
+
+      <div class="main-panel">
+        <div class="main-header">
+          <div class="main-header-logo">
+            <!-- Logo Header -->
+            <div class="logo-header" data-background-color="dark">
+              <a href="index.html" class="logo">
+                <img
+                  src="{% static 'adminTheme/assets/img/kaiadmin/logo_light.svg'%}"
+                  alt="navbar brand"
+                  class="navbar-brand"
+                  height="20"
+                />
+              </a>
+              <div class="nav-toggle">
+                <button class="btn btn-toggle toggle-sidebar">
+                  <i class="gg-menu-right"></i>
+                </button>
+                <button class="btn btn-toggle sidenav-toggler">
+                  <i class="gg-menu-left"></i>
+                </button>
+              </div>
+              <button class="topbar-toggler more">
+                <i class="gg-more-vertical-alt"></i>
+              </button>
+            </div>
+            <!-- End Logo Header -->
+          </div>
+          <!-- Navbar Header -->
+          <nav
+            class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom"
+          >
+            <div class="container-fluid">
+              <nav
+                class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex"
+              >
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <button type="submit" class="btn btn-search pe-1">
+                      <i class="fa fa-search search-icon"></i>
+                    </button>
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="Search ..."
+                    class="form-control"
+                  />
+                </div>
+              </nav>
+
+              <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
+                <li
+                  class="nav-item topbar-icon dropdown hidden-caret d-flex d-lg-none"
+                >
+                  <a
+                    class="nav-link dropdown-toggle"
+                    data-bs-toggle="dropdown"
+                    href="#"
+                    role="button"
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                  >
+                    <i class="fa fa-search"></i>
+                  </a>
+                  <ul class="dropdown-menu dropdown-search animated fadeIn">
+                    <form class="navbar-left navbar-form nav-search">
+                      <div class="input-group">
+                        <input
+                          type="text"
+                          placeholder="Search ..."
+                          class="form-control"
+                        />
+                      </div>
+                    </form>
+                  </ul>
+                </li>
+                
+                
+                <li class="nav-item topbar-icon dropdown hidden-caret">
+                  <a
+                    class="nav-link"
+                    data-bs-toggle="dropdown"
+                    href="#"
+                    aria-expanded="false"
+                  >
+                    <i class="fas fa-layer-group"></i>
+                  </a>
+                  <div class="dropdown-menu quick-actions animated fadeIn">
+                    <div class="quick-actions-header">
+                      <span class="title mb-1">Quick Actions</span>
+                      <span class="subtitle op-7">Shortcuts</span>
+                    </div>
+                    <div class="quick-actions-scroll scrollbar-outer">
+                      <div class="quick-actions-items">
+                        <div class="row m-0">
+                          <a class="col-6 col-md-4 p-0" href="{% url 'pending_users' %}">
+                            <div class="quick-actions-item">
+                              <div class="avatar-item bg-warning rounded-circle">
+                                <i class="fa-solid fa-hourglass-end"></i>
+                              </div>
+                              <span class="text">Pending Users</span>
+                            </div>
+                          </a>
+                          <a class="col-6 col-md-4 p-0" href="{% url 'all_users' %}">
+                            <div class="quick-actions-item">
+                              <div
+                                class="avatar-item bg-success rounded-circle"
+                              >
+                              <i class="fa-solid fa-users"></i>
+                              </div>
+                              <span class="text">All Users</span>
+                            </div>
+                          </a>
+                          <a class="col-6 col-md-4 p-0" href="{% url 'view_datasets_list' %}">
+                            <div class="quick-actions-item">
+                              <div class="avatar-item bg-primary rounded-circle">
+                                <i class="fas fa-database"></i>
+                              </div>
+                              <span class="text">Datasets</span>
+                            </div>
+                          </a>
+                          <a class="col-6 col-md-4 p-0" href="{% url 'algorithms_comparision_graph' %}">
+                            <div class="quick-actions-item">
+                              <div
+                                class="avatar-item bg-info rounded-circle"
+                              >
+                              <i class="fa-solid fa-chart-simple"></i>
+                              </div>
+                              <span class="text">Comparision Graph</span>
+                            </div>
+                          </a>
+                          <a class="col-6 col-md-4 p-0" href="{% url 'sentiment_analysis' %}">
+                            <div class="quick-actions-item">
+                              <div
+                                class="avatar-item bg-danger rounded-circle"
+                              >
+                              <i class="fa-solid fa-face-smile-beam"></i>
+                              </div>
+                              <span class="text">Sentiment Analysis</span>
+                            </div>
+                          </a>
+                          <a class="col-6 col-md-4 p-0" href="{% url 'feedbacks_graph' %}">
+                            <div class="quick-actions-item">
+                              <div
+                                class="avatar-item bg-secondary rounded-circle"
+                              >
+                              <i class="fa-solid fa-comment"></i>
+                              </div>
+                              <span class="text">Feedback Graph</span>
+                            </div>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+
+                <li class="nav-item topbar-user dropdown hidden-caret">
+                  <a
+                    class="dropdown-toggle profile-pic"
+                    data-bs-toggle="dropdown"
+                    href="#"
+                    aria-expanded="false"
+                  >
+                    <div class="avatar-sm">
+                      <img
+                        src="{% static 'adminTheme/assets/img/admin.png'%}"
+                        alt="..."
+                        class="avatar-img rounded-circle"
+                      />
+                    </div>
+                    <span class="profile-username">
+                      <span class="op-7">Hi,</span>
+                      <span class="fw-bold">Admin</span>
+                    </span>
+                  </a>
+                  <ul class="dropdown-menu dropdown-user animated fadeIn">
+                    <div class="dropdown-user-scroll scrollbar-outer">
+                      <li>
+                        <div class="user-box">
+                          <div class="avatar-lg">
+                            <img
+                              src="{% static 'adminTheme/assets/img/admin.png'%}"
+                              alt="image profile"
+                              class="avatar-img rounded"
+                            />
+                          </div>
+                          <div class="u-text">
+                            <h4>Admin</h4>
+                            <p class="text-muted">Active</p>
+                            <a
+                              href="{% url 'adminlogout' %}" onClick="return confirm('Are you sure you want to logout?')"
+                              class="btn btn-xs btn-secondary btn-sm"
+                              >Log out</a
+                            >
+                          </div>
+                        </div>
+                      </li>
+                      <li>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{% url 'all_users' %}">Manage Users</a>
+                        <a class="dropdown-item" href="{% url 'upload_dataset' %}">Upload Dataset</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{% url 'sentiment_analysis' %}">Manage Feedbacks</a>
+                      </li>
+                    </div>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </nav>
+          <!-- End Navbar -->
+        </div>
+
+        <div class="admin_container">
+            {% block content %}
+            {% endblock %}
+        </div>
+
+        <footer class="footer">
+          <div class="container-fluid d-flex justify-content-between">
+            <nav class="pull-left">
+              <ul class="nav">
+                <li class="nav-item">
+                  <a class="nav-link" href="" target="_blank">
+                    
+                  </a>
+                </li>
+              </ul>
+            </nav>
+            <div class="">
+               <i class=""></i> 
+              <a href=""></a>
+            </div>
+            <div>
+              
+              <a target="_blank" href=""></a>
+            </div>
+          </div>
+        </footer>
+      </div>
+
+      <!-- Custom template | don't include it in your project! -->
+      {% comment %} <div class="custom-template">
+        <div class="title">Settings</div>
+        <div class="custom-content">
+          <div class="switcher">
+            <div class="switch-block">
+              <h4>Logo Header</h4>
+              <div class="btnSwitch">
+                <button
+                  type="button"
+                  class="selected changeLogoHeaderColor"
+                  data-color="dark"
+                ></button>
+                <button
+                  type="button"
+                  class="changeLogoHeaderColor"
+                  data-color="blue"
+                ></button>
+                <button
+                  type="button"
+                  class="changeLogoHeaderColor"
+                  data-color="purple"
+                ></button>
+                <button
+                  type="button"
+                  class="changeLogoHeaderColor"
+                  data-color="light-blue"
+                ></button>
+                <button
+                  type="button"
+                  class="changeLogoHeaderColor"
+                  data-color="green"
+                ></button>
+                <button
+                  type="button"
+                  class="changeLogoHeaderColor"
+                  data-color="orange"
+                ></button>
+                <button
+                  type="button"
+                  class="changeLogoHeaderColor"
+                  data-color="red"
+                ></button>
+                <button
+                  type="button"
+                  class="changeLogoHeaderColor"
+                  data-color="white"
+                ></button>
+                <br />
+                <button
+                  type="button"
+                  class="changeLogoHeaderColor"
+                  data-color="dark2"
+                ></button>
+                <button
+                  type="button"
+                  class="changeLogoHeaderColor"
+                  data-color="blue2"
+                ></button>
+                <button
+                  type="button"
+                  class="changeLogoHeaderColor"
+                  data-color="purple2"
+                ></button>
+                <button
+                  type="button"
+                  class="changeLogoHeaderColor"
+                  data-color="light-blue2"
+                ></button>
+                <button
+                  type="button"
+                  class="changeLogoHeaderColor"
+                  data-color="green2"
+                ></button>
+                <button
+                  type="button"
+                  class="changeLogoHeaderColor"
+                  data-color="orange2"
+                ></button>
+                <button
+                  type="button"
+                  class="changeLogoHeaderColor"
+                  data-color="red2"
+                ></button>
+              </div>
+            </div>
+            <div class="switch-block">
+              <h4>Navbar Header</h4>
+              <div class="btnSwitch">
+                <button
+                  type="button"
+                  class="changeTopBarColor"
+                  data-color="dark"
+                ></button>
+                <button
+                  type="button"
+                  class="changeTopBarColor"
+                  data-color="blue"
+                ></button>
+                <button
+                  type="button"
+                  class="changeTopBarColor"
+                  data-color="purple"
+                ></button>
+                <button
+                  type="button"
+                  class="changeTopBarColor"
+                  data-color="light-blue"
+                ></button>
+                <button
+                  type="button"
+                  class="changeTopBarColor"
+                  data-color="green"
+                ></button>
+                <button
+                  type="button"
+                  class="changeTopBarColor"
+                  data-color="orange"
+                ></button>
+                <button
+                  type="button"
+                  class="changeTopBarColor"
+                  data-color="red"
+                ></button>
+                <button
+                  type="button"
+                  class="selected changeTopBarColor"
+                  data-color="white"
+                ></button>
+                <br />
+                <button
+                  type="button"
+                  class="changeTopBarColor"
+                  data-color="dark2"
+                ></button>
+                <button
+                  type="button"
+                  class="changeTopBarColor"
+                  data-color="blue2"
+                ></button>
+                <button
+                  type="button"
+                  class="changeTopBarColor"
+                  data-color="purple2"
+                ></button>
+                <button
+                  type="button"
+                  class="changeTopBarColor"
+                  data-color="light-blue2"
+                ></button>
+                <button
+                  type="button"
+                  class="changeTopBarColor"
+                  data-color="green2"
+                ></button>
+                <button
+                  type="button"
+                  class="changeTopBarColor"
+                  data-color="orange2"
+                ></button>
+                <button
+                  type="button"
+                  class="changeTopBarColor"
+                  data-color="red2"
+                ></button>
+              </div>
+            </div>
+            <div class="switch-block">
+              <h4>Sidebar</h4>
+              <div class="btnSwitch">
+                <button
+                  type="button"
+                  class="changeSideBarColor"
+                  data-color="white"
+                ></button>
+                <button
+                  type="button"
+                  class="selected changeSideBarColor"
+                  data-color="dark"
+                ></button>
+                <button
+                  type="button"
+                  class="changeSideBarColor"
+                  data-color="dark2"
+                ></button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="custom-toggle">
+          <i class="icon-settings"></i>
+        </div>
+      </div> {% endcomment %}
+      <!-- End Custom template -->
+    </div>
+    <!--   Core JS Files   -->
+    <script src="{% static 'adminTheme/assets/js/core/jquery-3.7.1.min.js'%}"></script>
+    <script src="{% static 'adminTheme/assets/js/core/popper.min.js'%}"></script>
+    <script src="{% static 'adminTheme/assets/js/core/bootstrap.min.js'%}"></script>
+
+    <!-- jQuery Scrollbar -->
+    <script src="{% static 'adminTheme/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js'%}"></script>
+
+    <!-- Chart JS -->
+    <script src="{% static 'adminTheme/assets/js/plugin/chart.js/chart.min.js'%}"></script>
+
+    <!-- jQuery Sparkline -->
+    <script src="{% static 'adminTheme/assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js'%}"></script>
+
+    <!-- Chart Circle -->
+    <script src="{% static 'adminTheme/assets/js/plugin/chart-circle/circles.min.js'%}"></script>
+
+    <!-- Datatables -->
+    <script src="{% static 'adminTheme/assets/js/plugin/datatables/datatables.min.js'%}"></script>
+
+    <!-- Bootstrap Notify -->
+    <script src="{% static 'adminTheme/assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js'%}"></script>
+
+    <!-- jQuery Vector Maps -->
+    <script src="{% static 'adminTheme/assets/js/plugin/jsvectormap/jsvectormap.min.js'%}"></script>
+    <script src="{% static 'adminTheme/assets/js/plugin/jsvectormap/world.js'%}"></script>
+
+    <!-- Sweet Alert -->
+    <script src="{% static 'adminTheme/assets/js/plugin/sweetalert/sweetalert.min.js'%}"></script>
+
+    <!-- Kaiadmin JS -->
+    <script src="{% static 'adminTheme/assets/js/kaiadmin.min.js'%}"></script>
+
+    <!-- Kaiadmin DEMO methods, don't include it in your project! -->
+    <script src="{% static 'adminTheme/assets/js/setting-demo.js'%}"></script>
+    <script src="{% static 'adminTheme/assets/js/demo.js'%}"></script>
+    <script>
+      $("#lineChart").sparkline([102, 109, 120, 99, 110, 105, 115], {
+        type: "line",
+        height: "70",
+        width: "100%",
+        lineWidth: "2",
+        lineColor: "#177dff",
+        fillColor: "rgba(23, 125, 255, 0.14)",
+      });
+
+      $("#lineChart2").sparkline([99, 125, 122, 105, 110, 124, 115], {
+        type: "line",
+        height: "70",
+        width: "100%",
+        lineWidth: "2",
+        lineColor: "#f3545d",
+        fillColor: "rgba(243, 84, 93, .14)",
+      });
+
+      $("#lineChart3").sparkline([105, 103, 123, 100, 95, 105, 115], {
+        type: "line",
+        height: "70",
+        width: "100%",
+        lineWidth: "2",
+        lineColor: "#ffa534",
+        fillColor: "rgba(255, 165, 52, .14)",
+      });
+    </script>
+  </body>
+
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    {% if messages %}
+        {% for message in messages %}
+          {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+            <script>swal({
+                title: "Success!",
+                text: "{{message}}",
+                icon: "success",
+                button: "OK",
+              });
+            </script>
+          
+          {% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+            <script>swal({
+                title: "Warning",
+                text: "{{message}}",
+                icon: "warning",
+                button: "OK",
+              
+              });
+            </script>
+          {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+            <script>swal({
+                title: "Info",
+                text: "{{message}}",
+                icon: "info",
+                button: "OK",
+              });
+            </script>
+          {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+            <script>swal({
+                title: "Opps!, Error Occured",
+                text: "{{message}}",
+                icon: "error",
+                button: "OK",
+              });
+            </script>
+          {% endif %}
+        {% endfor %}
+  {% endif %}
+</html>

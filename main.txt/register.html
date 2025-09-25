@@ -1,0 +1,79 @@
+{% extends "main/base.html" %}
+
+{% load static %}
+
+{% block content %}
+<div class="container-fluid py-5 customCtn">
+    <div class="container">
+        <div class="row g-5 align-items-center d-flex justify-content-between">
+            <div class="col-lg-4 wow fadeIn" data-wow-delay="0.1s">
+                <div class="windowImgCtn">
+                    <img class="img-fluid windowImg rounded" src="{% static 'sampleTheme/img/register-boy.jpg'%}">
+                </div>
+            </div>
+            <div class="col-lg-8 wow fadeIn">
+                <div class="wow fadeIn shadow p-3 rounded regformCtn" data-wow-delay="0.2s">
+                    <h1 class="text-center">New Registration</h1>
+                    <form class="regForm" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="registerRow">
+                            <div class="col-md-6">
+                                <div class="form-floating m-2">
+                                    <input type="text" class="form-control" id="username" name="username" placeholder="Full Name" required>
+                                    <label for="username">Full Name</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating m-2">
+                                    <input type="tel" class="form-control" id="phone" name="phone" placeholder="Phone Number" required>
+                                    <label for="phone">Phone Number</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="registerRow">
+                            <div class="col-md-6">
+                                <div class="form-floating m-2">
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+                                    <label for="email">Email</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating m-2">
+                                    <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                                    <label for="password">Password</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="registerRow">
+                            <div class="col-md-6">
+                                <div class="form-floating m-2">
+                                    <input type="text" class="form-control" id="age" name="age" placeholder="Age" required>
+                                    <label for="age">Age</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating m-2">
+                                    <input type="text" class="form-control" id="address" name="address" placeholder="Address" required>
+                                    <label for="address">Address</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="registerRow">
+                            <div class="col-md-6">
+                                <div class="form-floating m-2">
+                                    <input type="file" class="form-control" name="profilepic" id="profilepic" required>
+                                    <label for="profilepic">Upload Profile Picture</label>
+                                </div>
+                            </div>
+                            <a href="{% url 'user_login' %}">Already a user? Login</a>
+                        </div>
+                        <div class="col-12 text-center">
+                            <button class="btn btn-primary w-50 py-3" type="submit">Register</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock%}

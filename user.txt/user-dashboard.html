@@ -1,0 +1,100 @@
+{% extends 'user/base.html' %}
+
+{% load static %} 
+
+{% block content %}
+<div class="container-fluid py-5 customCtn">
+    <div class="col-lg-12 userDetails rounded shadow">
+        <div class="userDetailsCard">
+            <div class="p-3">
+                <h1>Welcome ! <span class="text-primary">{{user.full_name}}</span></h1>
+                <p>Start detecting Cardiac Arrest in new born babies at the early stages using our Cardiac Arrest Detector model</p>
+                <a class="btn btn-primary rounded-pill px-4 me-3" href="{% url 'detection' %}">Start Detection</a>
+            </div>
+            <img src="{% static 'adminTheme\assets\img\kaiadmin\man-with-laptop-light.png' %}" height="150"/>
+        </div>
+    </div>
+    <div class="container-fluid py-5 customCtn">
+        <div class="container">
+            <div class="row g-5 align-items-center">
+                <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
+                    <div class="about-img windowImgCtn">
+                        <img class="img-fluid windowImg" src="{% static 'sampleTheme/img/child_dark.jpg'%}">
+                    </div>
+                </div>
+                <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
+                    <div class="btn btn-sm border rounded-pill text-primary px-3 mb-3">About Cardiac Arrest</div>
+                    <h1 class="mb-4">What is a Cardiac Arrest, and why should I be concerned?</h1>
+                    <p class="mb-4">Cardiac arrest in newborns is a sudden loss of heart function, often caused by complications 
+                        such as respiratory failure, infections, or congenital heart defects. It is a major concern in CICUs due 
+                        to the vulnerability of newborns and the need for immediate, accurate detection for better survival rates.</p>
+                    <p class="mb-4">Detecting cardiac arrests in babies at CICU's in the early stages offers several significant advantages</p>
+                    <div class="row g-3">
+                        <div class="col-sm-6">
+                            <h6 class="mb-3"><i class="fa fa-check text-primary me-2"></i>Improved Survival Rates</h6>
+                            <h6 class="mb-0"><i class="fa fa-check text-primary me-2"></i>Reduced Risk of Complications</h6>
+                        </div>
+                        <div class="col-sm-6">
+                            <h6 class="mb-3"><i class="fa fa-check text-primary me-2"></i>Enhanced Decision-Making</h6>
+                            <h6 class="mb-0"><i class="fa fa-check text-primary me-2"></i>Lower Healthcare Costs</h6>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center mt-4">
+                        <a class="btn btn-primary rounded-pill px-4 me-3" href="{% url 'user_login' %}">Start Detection</a>
+                        {% comment %} <a class="btn btn-outline-primary btn-square me-3" href=""><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn btn-outline-primary btn-square me-3" href=""><i class="fab fa-twitter"></i></a>
+                        <a class="btn btn-outline-primary btn-square me-3" href=""><i class="fab fa-instagram"></i></a>
+                        <a class="btn btn-outline-primary btn-square" href=""><i class="fab fa-linkedin-in"></i></a> {% endcomment %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<div class="container-fluid bg-light py-5">
+        <div class="container py-5">
+            <div class="mx-auto wow fadeIn" data-wow-delay="0.1s">
+                <div class="btn btn-sm border rounded-pill text-primary px-3 mb-3">Algorithms</div>
+                <h1 class="mb-4">The ML Algorithms Used for Cardiac Arrest Detection</h1>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-4 wow fadeIn" data-wow-delay="0.3s">
+                    <div class="case-item position-relative overflow-hidden rounded mb-2 algoCard">
+                        <img class="img-fluid" src="{% static 'sampleTheme/img/ada.jpg'%}" alt="">
+                        <a class="case-overlay text-decoration-none" href="">
+                            <small>Decision Tree Algorithm</small>
+                            <p class="lh-base text-white mb-3">The Decision Tree algorithm is a supervised machine learning model that splits data into branches based on feature values
+                            </p>
+                            <span class="btn btn-square btn-primary"><i class="fa fa-arrow-right"></i></span>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 wow fadeIn" data-wow-delay="0.7s">
+                    <div class="case-item position-relative overflow-hidden rounded mb-2 algoCard">
+                        <img class="img-fluid" src="{% static 'sampleTheme/img/tree.jpg'%}" alt="">
+                        <a class="case-overlay text-decoration-none" href="">
+                            <small>Support Vector Machines (SVM)</small>
+                            <p class="lh-base text-white mb-3">Support Vector Machines (SVM) are highly effective for classification tasks, particularly in high-dimensional spaces, and often achieve high accuracy.
+                            </p>
+                            <span class="btn btn-square btn-primary"><i class="fa fa-arrow-right"></i></span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 wow fadeIn" data-wow-delay="0.5s">
+                    <div class="case-item position-relative overflow-hidden rounded mb-2 algoCard">
+                        <img class="img-fluid" src="{% static 'sampleTheme/img/lg.jpg'%}" alt="">
+                        <a class="case-overlay text-decoration-none" href="">
+                            <small>Logistic Regresion</small>
+                            <p class="lh-base text-white mb-3">Logistic Regression is fast and effective for binary classification tasks, but its accuracy is limited in capturing non-linear relationships.
+                            </p>
+                            <span class="btn btn-square btn-primary"><i class="fa fa-arrow-right"></i></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+
+{% endblock %}

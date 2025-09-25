@@ -1,0 +1,105 @@
+{% extends 'admin/base.html' %}
+
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <div class="page-inner">
+        <div class="page-header">
+            {% comment %} <h3 class="fw-bold mb-3">User Managment</h3> {% endcomment %}
+            <ul class="breadcrumbs mb-3">
+                <li class="nav-home">
+                    <a href="{% url 'admin_dashboard' %}">
+                    <i class="icon-home"></i>
+                    </a>
+                </li>
+                <li class="separator">
+                    <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'admin_dashboard' %}">Feedback Managment</a>
+                </li>
+                <li class="separator">
+                    <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item fw-bold">
+                    <a href="#">Feedbacks</a>
+                </li>
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card" id="admin_card">
+                    <div class="card-header d-flex justify-content-between">
+                        <h4 class="card-title">User Feedbacks</h4>
+                        <a href="{% url 'deleteAllFeeds' %}" onClick="return confirm('All items will be deleted permenantly, Are you sure you want to proceed?')" class="btn btn-label-danger btn-round me-2">Delete All</a>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table
+                            id="basic-datatables"
+                            class="display table table-striped table-hover"
+                            >
+                            <thead>
+                                <tr>
+                                    <th>User ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Phone Number</th>
+                                    <th>Rating</th>
+                                    <th>Feedback</th>
+                                </tr>
+                            </thead>
+                            {% comment %} <tfoot>
+                                <tr>
+                                <th>Name</th>
+                                <th>Position</th>
+                                <th>Office</th>
+                                <th>Age</th>
+                                <th>Start date</th>
+                                <th>Salary</th>
+                                </tr>
+                            </tfoot> {% endcomment %}
+                            <tbody>
+                                {%for feed in feedbacks%}
+                                <tr>
+                                <td>{{feed.Reviewer.user_id}}</td>
+                                <td>{{feed.Reviewer.full_name}}</td>
+                                <td>{{feed.Reviewer.email}}</td>
+                                <td>{{feed.Reviewer.phone_number}}</td>
+                                <td><span class="badge badge-warning badgeEl">{{feed.Rating}}</span></td>
+                                <td>{{feed.Review}}</td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button
+                                          class="btn btn-icon btn-info me-0"
+                                          type="button"
+                                          id="dropdownMenuButton"
+                                          data-bs-toggle="dropdown"
+                                          aria-haspopup="true"
+                                          aria-expanded="false"
+                                        >
+                                          <i class="fas fa-ellipsis-h"></i>
+                                        </button>
+                                        <div
+                                          class="dropdown-menu"
+                                          aria-labelledby="dropdownMenuButton"
+                                        >
+                                          <a class="dropdown-item text-danger" href="{% url 'deleteFeed' feed.Feed_id %}" onClick="return confirm('Are you sure you want to delete feedback?')"><i class="fa-solid fa-trash text-danger m-2"></i>Delete Feedback</a>
+                                        </div>
+                                    </div>
+                                </td>
+                                </tr>
+                                {%endfor%}
+                                <tr>
+                            </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    
+{% endblock %}

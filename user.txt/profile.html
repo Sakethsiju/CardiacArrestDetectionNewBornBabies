@@ -1,0 +1,100 @@
+{% extends "user/base.html" %}
+
+{% load static %}
+
+{% block content %}
+<div class="container-fluid py-5 customCtn">
+    <div class="container">
+        <div class="card mb-4 p-4 profileCtn shadow" id="admin_card">
+            <h4 class="text-dark main_formHeading text-center">Profile Details</h4>
+            <!-- Account -->
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="card-body">
+                    <div class="d-flex align-items-start align-items-sm-center profilebg">
+                    <img
+                        src="/media/{{ user.user_image }}"
+                        alt="user-avatar"
+                        class="profileAvatar"
+                        id="uploadedAvatar"
+                    />
+                    <div class="button-wrapper">
+                        {% comment %} <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
+                        <span class="d-none d-sm-block">Upload new photo</span>
+                        <i class="bx bx-upload d-block d-sm-none"></i> {% endcomment %}
+                        <input
+                            type="file"
+                            id="upload"
+                            class="form-control upload_dataset_inptutEl mb-3"
+                            accept="image/*"
+                            name="profileImg"
+                        />
+                        </label>
+
+                        <p class="text-white mb-0">Allowed JPG, GIF or PNG. Max size of 800K</p>
+                    </div>
+                    </div>
+                </div>
+                <hr class="my-0" />
+                <div class="card-body">
+                    <div id="formAccountSettings" onsubmit="return false">
+                    <div class="row">
+                        <div class="mb-3 col-md-6">
+                        <label for="fullname" class="form-label">Full Name</label>
+                        <input class="form-control" type="text" id="fullname" name="fullname" value="{{user.full_name}}" placeholder="John"/>
+                        </div>
+                        <div class="mb-3 col-md-6">
+                            <label class="form-label" for="phone">Phone Number</label>
+                            <div class="input-group input-group-merge">
+                            <span class="input-group-text">IND (+91)</span>
+                            <input
+                                type="text"
+                                id="phone"
+                                name="phone"
+                                class="form-control"
+                                placeholder="987** *****"
+                                value="{{user.phone_number}}"
+                            />
+                            </div>
+                        </div>
+                        <div class="mb-3 col-md-6">
+                        <label for="email" class="form-label">E-mail</label>
+                        <input
+                            class="form-control"
+                            type="text"
+                            id="email"
+                            name="email"
+                            value="{{user.email}}"
+                            placeholder="john.doe@example.com"
+                        />
+                        </div>
+                        <div class="mb-3 col-md-6">
+                        <label for="password" class="form-label">Password</label>
+                        <input
+                            type="password"
+                            class="form-control"
+                            id="password"
+                            name="password"
+                            value="{{user.password}}"
+                            placeholder="********"
+                        />
+                        </div>
+                        <div class="mb-3 col-md-6">
+                            <label for="age" class="form-label">Age</label>
+                            <input class="form-control" type="text" id="age" name="age" placeholder="23 Years" value="{{user.age}}"/>
+                        </div>
+                        <div class="mb-3 col-md-6">
+                        <label for="address" class="form-label">Address</label>
+                        <input type="text" class="form-control" id="address" name="address" placeholder="Address" value="{{user.address}}"/>
+                        </div>
+                    <div class="mt-2">
+                        <button type="submit" class="btn btn-primary rounded-pill px-4 me-3">Save Changes</button>
+                        <a type="button" class="btn btn-light border rounded-pill text-primary" href="{% url 'user_profile' %}">Cancel</a>
+                    </div>
+                </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock%}
